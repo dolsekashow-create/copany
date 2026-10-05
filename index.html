@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة كوباني العقارية | بيع وشراء وإيجار العقارات</title>
+  <meta name="description" content="منصة كوباني العقارية — ابحث عن فيلا، شقة، منزل، أرض أو محل تجاري للبيع أو الإيجار في كوباني والمدن المجاورة.">
+  <link rel="icon" href="assets/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- الشريط العلوي -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>📞 +963 900 000 000</span>
+      <span>✉️ info@kobani-realestate.com</span>
+      <span class="hide-sm">🕘 السبت – الخميس: 9 ص – 7 م</span>
+    </div>
+  </div>
+
+  <!-- الهيدر -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#home" class="brand">
+        <img src="assets/logo.jpg" alt="شعار منصة كوباني العقارية">
+        <div>
+          <strong>كوباني العقارية</strong>
+          <small>Kobani Real Estate</small>
+        </div>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#home">الرئيسية</a>
+        <a href="#listings">العقارات</a>
+        <a href="#services">خدماتنا</a>
+        <a href="#agents">فريقنا</a>
+        <a href="#about">من نحن</a>
+        <a href="#contact">تواصل معنا</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="favBtn" title="المفضلة">♥ <span class="badge" id="favCount">0</span></button>
+        <button class="btn btn-primary" id="addListingBtn">+ أضف عقارك</button>
+        <button class="menu-toggle" id="menuToggle" aria-label="القائمة">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- الواجهة الرئيسية -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="container hero-content">
+      <span class="eyebrow">ثقة · شفافية · احتراف</span>
+      <h1>بيتك القادم يبدأ من <span>كوباني العقارية</span></h1>
+      <p>آلاف العقارات الموثّقة للبيع والإيجار — فلل، شقق، أراضٍ ومحلات تجارية، مع فريق مختص يرافقك حتى توقيع العقد.</p>
+
+      <form class="search-box" id="heroSearch">
+        <div class="tabs">
+          <button type="button" class="tab active" data-purpose="all">الكل</button>
+          <button type="button" class="tab" data-purpose="sale">للبيع</button>
+          <button type="button" class="tab" data-purpose="rent">للإيجار</button>
+        </div>
+        <div class="search-fields">
+          <label>
+            <span>كلمة البحث</span>
+            <input type="text" id="qText" placeholder="مثال: فيلا مع مسبح">
+          </label>
+          <label>
+            <span>المدينة</span>
+            <select id="qCity"><option value="">كل المدن</option></select>
+          </label>
+          <label>
+            <span>نوع العقار</span>
+            <select id="qType"><option value="">كل الأنواع</option></select>
+          </label>
+          <label>
+            <span>السعر الأقصى ($)</span>
+            <input type="number" id="qMax" placeholder="بلا حد" min="0">
+          </label>
+          <button class="btn btn-primary btn-lg" type="submit">🔍 ابحث</button>
+        </div>
+      </form>
+
+      <div class="stats">
+        <div><strong data-count="1250">0</strong><span>عقار متاح</span></div>
+        <div><strong data-count="3400">0</strong><span>عميل سعيد</span></div>
+        <div><strong data-count="12">0</strong><span>سنة خبرة</span></div>
+        <div><strong data-count="6">0</strong><span>مدن نغطيها</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- الأنواع -->
+  <section class="section categories">
+    <div class="container">
+      <div class="section-head">
+        <h2>تصفّح حسب النوع</h2>
+        <p>اختر نوع العقار الذي يناسب احتياجاتك</p>
+      </div>
+      <div class="cat-grid" id="catGrid"></div>
+    </div>
+  </section>
+
+  <!-- العقارات -->
+  <section class="section listings" id="listings">
+    <div class="container">
+      <div class="section-head row">
+        <div>
+          <h2>أحدث العقارات</h2>
+          <p id="resultsInfo">جميع العقارات المتاحة</p>
+        </div>
+        <div class="toolbar">
+          <select id="sortBy">
+            <option value="new">الأحدث</option>
+            <option value="priceAsc">السعر: من الأقل</option>
+            <option value="priceDesc">السعر: من الأعلى</option>
+            <option value="size">المساحة الأكبر</option>
+          </select>
+          <button class="btn btn-ghost" id="resetFilters">إعادة الضبط</button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" hidden>
+        <p>لا توجد عقارات مطابقة لبحثك 😕</p>
+        <button class="btn btn-primary" onclick="resetAll()">عرض كل العقارات</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- خدماتنا -->
+  <section class="section services" id="services">
+    <div class="container">
+      <div class="section-head">
+        <h2>خدماتنا</h2>
+        <p>حلول عقارية متكاملة من البحث وحتى الاستلام</p>
+      </div>
+      <div class="services-grid">
+        <div class="service"><div class="s-ico">🏠</div><h3>بيع وشراء العقارات</h3><p>نسوّق عقارك لآلاف المهتمين ونساعدك على الوصول لأفضل سعر.</p></div>
+        <div class="service"><div class="s-ico">🔑</div><h3>إدارة الإيجارات</h3><p>نختار المستأجر المناسب، نحصّل الإيجار ونتابع الصيانة نيابة عنك.</p></div>
+        <div class="service"><div class="s-ico">📐</div><h3>التقييم العقاري</h3><p>تقييم دقيق للقيمة السوقية مبني على بيانات المنطقة والمبيعات الفعلية.</p></div>
+        <div class="service"><div class="s-ico">📜</div><h3>الاستشارات القانونية</h3><p>تدقيق الملكية والسندات وصياغة العقود لضمان صفقة آمنة.</p></div>
+        <div class="service"><div class="s-ico">🏗️</div><h3>المشاريع الاستثمارية</h3><p>دراسات جدوى وفرص استثمار في المشاريع السكنية والتجارية.</p></div>
+        <div class="service"><div class="s-ico">📸</div><h3>تصوير احترافي</h3><p>تصوير فوتوغرافي وجولات افتراضية تُبرز عقارك بأفضل صورة.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- من نحن -->
+  <section class="section about" id="about">
+    <div class="container about-grid">
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1000&q=80" alt="فريق كوباني العقارية مع عميل" loading="lazy">
+        <div class="about-badge"><strong>12+</strong><span>سنة من الثقة</span></div>
+      </div>
+      <div>
+        <span class="eyebrow dark">من نحن</span>
+        <h2>نبني الثقة قبل أن نبيع العقار</h2>
+        <p>منصة كوباني العقارية هي وجهتك الموثوقة لكل ما يتعلق بالعقارات في كوباني والمنطقة. نجمع بين المعرفة العميقة بالسوق المحلي والأدوات الرقمية الحديثة لنقدّم تجربة بيع وشراء وإيجار سهلة وشفافة.</p>
+        <ul class="checks">
+          <li>✔ جميع العقارات تتم معاينتها والتحقق من أوراقها</li>
+          <li>✔ أسعار واقعية مبنية على دراسة السوق</li>
+          <li>✔ مرافقة كاملة حتى نقل الملكية</li>
+          <li>✔ دعم متواصل عبر الهاتف وواتساب</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary btn-lg">تواصل معنا الآن</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- فريقنا -->
+  <section class="section agents" id="agents">
+    <div class="container">
+      <div class="section-head">
+        <h2>فريق المستشارين</h2>
+        <p>خبراء جاهزون لمساعدتك في كل خطوة</p>
+      </div>
+      <div class="agents-grid" id="agentsGrid"></div>
+    </div>
+  </section>
+
+  <!-- آراء العملاء -->
+  <section class="section testimonials">
+    <div class="container">
+      <div class="section-head">
+        <h2>ماذا يقول عملاؤنا</h2>
+      </div>
+      <div class="t-grid">
+        <blockquote><p>"وجدت شقتي خلال أسبوع واحد فقط، والفريق تابع معي كل الأوراق حتى الاستلام. تجربة ممتازة."</p><cite>— دلوفان أحمد، كوباني</cite></blockquote>
+        <blockquote><p>"بعت أرضي بسعر أعلى مما توقعت، والتقييم كان دقيقاً جداً. شكراً لكوباني العقارية."</p><cite>— نسرين خليل، القامشلي</cite></blockquote>
+        <blockquote><p>"إدارة الإيجار وفّرت علي الكثير من الوقت، والتواصل دائماً سريع ومحترم."</p><cite>— جوان مصطفى، أربيل</cite></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- تواصل معنا -->
+  <section class="section contact" id="contact">
+    <div class="container contact-grid">
+      <div>
+        <span class="eyebrow dark">تواصل معنا</span>
+        <h2>هل لديك عقار للبيع أو تبحث عن منزل؟</h2>
+        <p>اترك بياناتك وسيتواصل معك أحد مستشارينا خلال 24 ساعة.</p>
+        <div class="contact-info">
+          <div><span>📍</span><div><strong>العنوان</strong><p>كوباني — الشارع العام، مقابل السوق المركزي</p></div></div>
+          <div><span>📞</span><div><strong>الهاتف</strong><p dir="ltr">+963 900 000 000</p></div></div>
+          <div><span>✉️</span><div><strong>البريد</strong><p>info@kobani-realestate.com</p></div></div>
+        </div>
+      </div>
+      <form class="card form" id="contactForm">
+        <div class="two">
+          <label>الاسم الكامل<input required name="name" placeholder="اسمك"></label>
+          <label>رقم الهاتف<input required name="phone" type="tel" placeholder="09xxxxxxxx" dir="ltr"></label>
+        </div>
+        <label>نوع الطلب
+          <select name="kind">
+            <option>أبحث عن عقار للشراء</option>
+            <option>أبحث عن عقار للإيجار</option>
+            <option>أريد بيع عقاري</option>
+            <option>أريد تأجير عقاري</option>
+            <option>استشارة / تقييم</option>
+          </select>
+        </label>
+        <label>رسالتك<textarea name="msg" rows="4" placeholder="اكتب تفاصيل طلبك..."></textarea></label>
+        <button class="btn btn-primary btn-lg full" type="submit">إرسال الطلب</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- الفوتر -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand light">
+          <img src="assets/logo.jpg" alt="شعار كوباني العقارية">
+          <div><strong>كوباني العقارية</strong><small>Kobani Real Estate</small></div>
+        </div>
+        <p>منصة عقارية متكاملة تربط البائعين والمشترين والمستأجرين بثقة وشفافية.</p>
+      </div>
+      <div>
+        <h4>روابط سريعة</h4>
+        <a href="#listings">العقارات</a><a href="#services">خدماتنا</a><a href="#about">من نحن</a><a href="#contact">تواصل معنا</a>
+      </div>
+      <div>
+        <h4>أنواع العقارات</h4>
+        <a href="#listings" data-type-link="villa">فلل</a><a href="#listings" data-type-link="apartment">شقق</a><a href="#listings" data-type-link="land">أراضٍ</a><a href="#listings" data-type-link="shop">محلات تجارية</a>
+      </div>
+      <div>
+        <h4>النشرة البريدية</h4>
+        <p>اشترك ليصلك كل جديد من العقارات.</p>
+        <form class="newsletter" id="newsletter">
+          <input type="email" required placeholder="بريدك الإلكتروني">
+          <button class="btn btn-primary">اشتراك</button>
+        </form>
+      </div>
+    </div>
+    <div class="copy">© <span id="year"></span> منصة كوباني العقارية — جميع الحقوق محفوظة</div>
+  </footer>
+
+  <!-- نافذة تفاصيل العقار -->
+  <div class="modal" id="propModal" hidden>
+    <div class="modal-box large">
+      <button class="modal-close" data-close>✕</button>
+      <div id="propDetails"></div>
+    </div>
+  </div>
+
+  <!-- نافذة إضافة عقار -->
+  <div class="modal" id="addModal" hidden>
+    <div class="modal-box">
+      <button class="modal-close" data-close>✕</button>
+      <h2>أضف عقارك</h2>
+      <p class="muted">املأ البيانات وسيقوم فريقنا بمراجعة الإعلان ونشره.</p>
+      <form class="form" id="addForm">
+        <label>عنوان الإعلان<input required name="title" placeholder="مثال: شقة 3 غرف بإطلالة جميلة"></label>
+        <div class="two">
+          <label>نوع العقار<select name="type" id="addType"></select></label>
+          <label>الغرض<select name="purpose"><option value="sale">للبيع</option><option value="rent">للإيجار</option></select></label>
+        </div>
+        <div class="two">
+          <label>المدينة<input required name="city" value="كوباني"></label>
+          <label>الحي / المنطقة<input required name="area"></label>
+        </div>
+        <div class="three">
+          <label>السعر ($)<input required name="price" type="number" min="1"></label>
+          <label>المساحة (م²)<input required name="size" type="number" min="1"></label>
+          <label>الغرف<input name="beds" type="number" min="0" value="0"></label>
+        </div>
+        <label>رابط صورة (اختياري)<input name="image" type="url" placeholder="https://..." dir="ltr"></label>
+        <label>الوصف<textarea name="desc" rows="3"></textarea></label>
+        <button class="btn btn-primary btn-lg full">نشر الإعلان</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- نافذة المفضلة -->
+  <div class="modal" id="favModal" hidden>
+    <div class="modal-box">
+      <button class="modal-close" data-close>✕</button>
+      <h2>♥ المفضلة</h2>
+      <div id="favList"></div>
+    </div>
+  </div>
+
+  <a class="whatsapp" href="https://wa.me/963900000000" target="_blank" rel="noopener" title="واتساب">💬</a>
+  <div class="toast" id="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
